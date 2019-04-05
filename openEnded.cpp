@@ -1,11 +1,19 @@
 #include<bits/stdc++.h>
 #include<conio.h>
-#include<dos.h>
-#include<ctime>
+// #include<dos.h>
+// #include<ctime>
+#include<windows.h>
 using namespace std;
+
+ostream& mani(ostream& out)
+{
+	out<<setw(20)<<fixed<<setprecision(2);
+	return out;
+}
 
 class L1
 {
+protected:
 	char alpha[26];
 	int check[26];
 	double timeTaken,accuracy,score;
@@ -38,12 +46,12 @@ class L1
 			double playL1()
 			{
 				system("CLS");
-				cout<<"Starting Level 1\n10 letter will be shown on the screen, press the corresponding key\nPress any key...\n";
+				cout<<"Level 1\n10 letter will be shown on the screen, press the corresponding key\nPress any key...\n";
 				getch();
-				clock_t begin = clock();
 				system("CLS");
 				accuracy=0;
 				char ch;
+				clock_t begin = clock();
 				for(int i=0;i<10;i++)
 				{
 					cout<<alpha[i]<<"\n";
@@ -53,7 +61,7 @@ class L1
 					system("CLS");
 				}
 				clock_t end = clock();
-				timeTaken = double(end-begin)/1000;
+				timeTaken = (end-begin)/1000;
 				cout<<"Time taken was "<<timeTaken<<endl;
 				timeTaken = (30-timeTaken)*50/27;                  //Formula to calculate time score
 				cout<<"Accuracy was "<<accuracy<<endl;
@@ -62,21 +70,14 @@ class L1
 					score = 0;
 				else
 					score = timeTaken +accuracy ;
+				getch();
 				return score;
 			}
-			// void show()
-			// {
-			// 	cout<<"\n\nStarted showing\n";
-			// 	for(int i=0;i<26;i++)
-			// 	{
-			// 		cout<<alpha[i]<<"  ";
-			// 	}
-			// 	cout<<"\n";
-			// }
 };
 
 class L2
 {
+protected:
 	char words[100][15];
 	double timeTaken,accuracy,score;
 	public: 
@@ -110,7 +111,7 @@ class L2
 				char arr[20][15];
 				system("CLS");
 				char temp[15];		//User's typed word
-				cout<<"Ten words will be displayed on the screen\nType them in quick succession\nPress any key....";
+				cout<<"Level 2\nTen words will be displayed on the screen\nType them in quick succession\nPress any key....";
 				getch();
 				system("CLS");
 				clock_t start = clock();
@@ -139,13 +140,9 @@ class L2
 					cout<<"Wrongly typed words are\n";
 					for(int i=0;i<=(wrong-2);i+=2)
 					{
-						cout<<arr[i]<<"\t";
+						cout<<arr[i]<<"\t\t"<<arr[i+1];
+						cout<<"\n";
 					}
-					cout<<"\n";
-					for(int i=1;i<=(wrong-1);i+=2)
-					{
-						cout<<arr[i]<<"\t";
-					}	
 				}
 				cout<<"\n";
 				cout<<"Time taken was "<<timeTaken<<endl;
@@ -156,25 +153,21 @@ class L2
 					score = 0;
 				else
 					score = timeTaken +accuracy ;
+				getch();
 				return score;
 			}
-			// void show()
-			// {
-			// 	for(int i=0;i<100;i++)
-			// 	{
-			// 		cout<<words[i]<<" ";
-			// 	}
-			// }
 };
 
 class L3
 {
+protected:	
 	string collection[25];
-	int score;
+	double timeTaken,accuracy,score;
 	public: L3()
 			{
-				score=0;
-				cout<<"adsfadsfas\n";
+				score =0;
+				accuracy =0;
+				timeTaken =0;
 				ifstream fp;
 				fp.open("sentence.txt");
 				string temp;
@@ -196,14 +189,16 @@ class L3
 				fp.close();
 			}
 
-			int playL3()
+			double playL3()
 			{
+				int countOfWords = 0;
 				system("CLS");
 				int w=0;
 				string temp,wrong[50],temp1,temp2;
-				cout<<"You will be shown 3 sentences\nWrite them and press enter\nPress any key to continue...\n";
+				cout<<"Level 3\nYou will be shown 3 sentences\nWrite them and press enter\nPress any key to continue...\n";
 				getch();
 				system("CLS");
+				clock_t begin = clock();
 				for(int i=0;i<3;i++)
 				{
 				    cout<<collection[i]<<"\n";
@@ -212,22 +207,25 @@ class L3
 				    istringstream okss(collection[i]);
 				    do
 				    {
-				    	okss>>temp1;
-				    	tempss>>temp2;
+				    	tempss>>temp1;
+				    	okss>>temp2;
 				    	if(temp1 != temp2)
 				    	{
-				    		wrong[w]=temp1;
-				    		wrong[w+1]=temp2;
+				    		wrong[w]=temp2;
+				    		wrong[w+1]=temp1;
 				    		w+=2;
 				    	}
 				    	else
 				    	{
-				    		score++;
+				    		accuracy++;
 				    	}
+				    	countOfWords++;
 				    }while(okss);			
 					cout<<"\n";					
 				    system("CLS");
 				}
+				clock_t end = clock();
+				timeTaken = (end-begin)/1000.0;
 				if(!w)
 				{
 					cout<<"Well done, you typed all of them correctly\n";
@@ -235,17 +233,24 @@ class L3
 				else
 				{
 					cout<<"Wrongly typed words are\n";
-					for(int i=0;i<(w-2);i+=2)
+					for(int i=0 ;i<w; i+=2 )
 					{
-						cout<<wrong[i]<<"\t";
-					}
-					cout<<"\n";
-					for(int i=1;i<(w-1);i+=2)
-					{
-						cout<<wrong[i]<<"\t";
+						cout<<wrong[i]<<"\t\t"<<wrong[i+1];
+						cout<<'\n';
 					}	
 				}
-				return score;
+				cout<<'\n';
+				cout<<"Number of words are "<<countOfWords<<endl;
+				cout<<"Time taken was "<<timeTaken<<endl;
+				timeTaken = ( 3*countOfWords -timeTaken)*50/ (2*countOfWords) ;                  //Formula to calculate time score
+				cout<<"Accuracy was "<<accuracy<<endl;
+				accuracy = accuracy/countOfWords*50;						   //Formula to calculate accuracy score
+				if(accuracy < 5)
+					score = 0;
+				else
+					score = timeTaken +accuracy ;
+				getch();
+				return score;				
 			}
 
 			void show()
@@ -263,37 +268,47 @@ typedef struct
 
 class L4
 {
-	float score;
+protected:	
+	double score,accuracy,timeTaken;
+	int countOfWords;
  public:
  	L4()
  	{
  		score =0;
+ 		accuracy =0;
+ 		timeTaken =0;
+ 		countOfWords =0;
  	}
- 	void playL4()
+ 	double playL4()
  	{
  		system("CLS");
- 		cout<<"You will be shown a paragraph\nType the paragraph as fast and as accurately as you can\n";
-		int w=0,noOfWords=0; 
+ 		cout<<"Level 4\nYou will be shown a paragraph\nType the paragraph as fast and as accurately as you can\nPress any key...\n";
+ 		getch();
+ 		system("CLS");
+		int w=0; 
+		clock_t begin,end;
 		char temp[1000];	
  		string temp1,temp2,wrong[50],userinput,stringtemp;
 		srand(time(NULL));
 		int random = rand()%3;
-		cout<<"\nRandom = "<<random<<endl;
+		// cout<<"\nRandom = "<<random<<endl;
 		FILE* fp;
 		fp = fopen("paragraphs.bin","rb");
 		for(int i=0;i<3;i++)
 		{
 			fread(&temp,sizeof(Type_para),1,fp);
+			begin = clock();
 			if(i==random)
 			{
 				stringtemp = temp;
-				cout<<stringtemp;
+				cout<<stringtemp<<endl;
 			    getline(cin, userinput);
+			    end = clock();
 			    istringstream tempss(stringtemp);
 			    istringstream okss(userinput);
 			    do
 			    {
-			    	noOfWords++;
+			    	countOfWords++;
 			    	okss>>temp1;
 			    	tempss>>temp2;
 			    	if(temp1 != temp2)
@@ -304,7 +319,7 @@ class L4
 			    	}
 			    	else
 			    	{
-			    		score++;
+			    		accuracy++;
 			    	}
 			    }while(okss);			
 				cout<<"\n";
@@ -319,18 +334,25 @@ class L4
 		else
 		{
 			cout<<"Wrongly typed words are\n";
-			for(int i=0;i<(w-2);i+=2)
+			for(int i=0 ;i<w; i+=2 )
 			{
-				cout<<wrong[i]<<"\t";
-			}
-			cout<<"\n";
-			for(int i=1;i<(w-1);i+=2)
-			{
-				cout<<wrong[i]<<"\t";
+				cout<<wrong[i]<<"\t\t"<<wrong[i+1];
+				cout<<'\n';
 			}	
-		}	
-		cout<<"The noOfWords are "<<noOfWords<<endl;			
-		cout<<"The score is "<<score<<endl;			
+		}
+		timeTaken = (end-begin)/1000.0;
+		cout<<'\n';
+		cout<<"Number of words are "<<countOfWords<<endl;
+		cout<<"Time taken was "<<timeTaken<<endl;
+		timeTaken = ( 3*countOfWords -timeTaken)*50/ (2*countOfWords) ;                  //Formula to calculate time score
+		cout<<"Accuracy was "<<accuracy<<endl;
+		accuracy = accuracy/countOfWords*50;						   //Formula to calculate accuracy score
+		if(accuracy < 5)
+			score = 0;
+		else
+			score = timeTaken +accuracy ;
+		getch();
+		return score;			
 	}
 };
 
@@ -342,7 +364,9 @@ typedef struct
 
 class L5
 {
-	int arr[5],score;
+protected:	
+	int arr[5];
+	double score,accuracy;
     public: L5()
 		{
 			int num=0;
@@ -354,12 +378,12 @@ class L5
 			}
 		}
 
-		int playL5()
+		double playL5()
 		{
 			char option;
 			int counter=0;
 			system("CLS");
-			cout<<"You will be shown 5 MCQ questions\nAnswer by pressing the option 'a' 'b' 'c' or 'd'\n";
+			cout<<"Level 5\nYou will be shown 5 MCQ questions\nAnswer by pressing the option 'a' 'b' 'c' or 'd'\n(Don't press Enter after pressing your answer)\n";
 			cout<<"Press any key to continue\n";
 			getch();
 			system("CLS");
@@ -380,13 +404,13 @@ class L5
 					{
 						score++;
 						cout<<":) Correct";
-						_sleep(600);
+						Sleep(600);
 						system("CLS");
 					}
 					else
 					{
 						cout<<":( Incorrect";
-						_sleep(600);
+						Sleep(600);
 						system("CLS");
 					}
 					counter++;
@@ -394,14 +418,76 @@ class L5
 				if(counter == 5)
 					break;
 			}
+			cout<<"Your score was "<<score<<"/5\n";
+			score= score*20;
+			accuracy = score;
+			getch();
 			return score;
 		}
 
 };
 
+void loadingScreen()
+{
+	system("CLS");
+	string load[3];
+	load[0]="Loading.";
+	load[1]="Loading..";
+	load[2]="Loading...";
+	for(int i=0;i<9;i++)
+	{
+		cout<<load[i%3];
+		Sleep(150);
+		system("CLS");
+	}
+}
+
+class player: public L1,public L2,public L3,public L4,public L5
+{
+	double  totalAccuracy,totalScore;
+	public: player()
+			{
+				totalAccuracy = totalScore = 0;
+			}
+			void play()
+			{
+				system("CLS");
+				totalScore  = totalScore + playL1();
+				totalScore  = totalScore + playL2();
+				fflush(stdin);	
+				totalScore  = totalScore + playL3();				
+				totalScore  = totalScore + playL4();			
+				totalScore  = totalScore + playL5();
+				totalScore  = totalScore / 5;
+
+				totalAccuracy  = totalAccuracy + L1::accuracy;
+				totalAccuracy  = totalAccuracy + L2::accuracy;
+				totalAccuracy  = totalAccuracy + L3::accuracy;
+				totalAccuracy  = totalAccuracy + L4::accuracy;
+				totalAccuracy  = totalAccuracy + L5::accuracy;
+				totalAccuracy  = totalAccuracy / 5 *2;
+
+				loadingScreen();
+
+				system("CLS");
+
+				cout<<"Level  "<<mani<<"Score"<<mani<<"Accuracy"<<endl;
+				cout<<"Level 1"<<mani<<L1::score<<mani<<L1::accuracy*2<<endl;
+				cout<<"Level 2"<<mani<<L2::score<<mani<<L2::accuracy*2<<endl;
+				cout<<"Level 3"<<mani<<L3::score<<mani<<L3::accuracy*2<<endl;
+				cout<<"Level 3"<<mani<<L4::score<<mani<<L4::accuracy*2<<endl;
+				cout<<"Level 3"<<mani<<L5::score<<mani<<L5::accuracy<<"\n\n";
+
+				cout<<"Total Score:    "<<fixed<<setprecision(2)<<totalScore<<endl;
+				cout<<"Total Accuracy: "<<fixed<<setprecision(2)<<totalAccuracy<<endl;
+				cout<<"Thanku for playing :)\n";
+			}
+};
+
+
 int main()
 {
-	L2 ok;
-	cout<<"Your score was "<<ok.playL2()<<endl;
+	player ok;
+	ok.play();
 	return 0;
 }
